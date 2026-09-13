@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2026 Project516 <138796702+Project516@users.noreply.github.com>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+name: Build AppImage
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  release:
+    types: [created]
+
+jobs:
+  build-appimage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Build JAR
+        run: ./gradlew shadowJar
+
+      - name: Build AppImage
+        uses: AppImageCrafters/build-appimage@master
+        with:
+          recipe: AppImageBuilder.yml
+        env:
+          UPDATE_INFO: gh-releases-zsync|Project516|NumberGuessingGame|latest|*x86_64.AppImage.zsync
+
+      - name: Upload AppImage artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: NumberGuessingGame.AppImage
+          path: NumberGuessingGame-x86_64.AppImage

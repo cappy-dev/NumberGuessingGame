@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: 2026 Project516 <138796702+Project516@users.noreply.github.com>
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+# Recipe for building a Number Guessing Game AppImage.
+# See https://appimage-builder.readthedocs.io for full recipe syntax.
+
+version: 1
+
+AppDir:
+  path: ./AppDir
+
+  app_info:
+    id: com.project516.NumberGuessingGame
+    name: NumberGuessingGame
+    icon: numberguessinggame
+    version: latest
+    exec: usr/bin/run.sh
+    exec_args: "$@"
+
+  script: ./scripts/appimage-setup.sh
+
+  apt:
+    arch: amd64
+    allow_unauthenticated: true
+    sources:
+      - sourceline: deb http://archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse
+
+  runtime:
+    version: "continuous"
+
+AppImage:
+  arch: x86_64
+  update-information: gh-releases-zsync|Project516|NumberGuessingGame|latest|*x86_64.AppImage.zsync
+  sign-key: null
