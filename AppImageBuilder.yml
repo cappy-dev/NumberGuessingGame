@@ -6,6 +6,7 @@
 # See https://appimage-builder.readthedocs.io for full recipe syntax.
 
 version: 1
+script: ./scripts/appimage-setup.sh
 
 AppDir:
   path: ./AppDir
@@ -18,18 +19,17 @@ AppDir:
     exec: usr/bin/run.sh
     exec_args: "$@"
 
-  script: ./scripts/appimage-setup.sh
-
   apt:
     arch: amd64
     allow_unauthenticated: true
     sources:
       - sourceline: deb http://archive.ubuntu.com/ubuntu/ noble main restricted universe multiverse
+    include:
+      - openjdk-17-jre-headless
 
   runtime:
-    version: "continuous"
+    version: v2.0.0
 
 AppImage:
   arch: x86_64
   update-information: gh-releases-zsync|Project516|NumberGuessingGame|latest|*x86_64.AppImage.zsync
-  sign-key: null
