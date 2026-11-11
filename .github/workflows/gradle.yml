@@ -45,7 +45,7 @@ jobs:
     #   run: gradle build
 
   dependency-submission:
-
+    if: vars.ENABLE_DEPENDENCY_GRAPH == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
